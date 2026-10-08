@@ -9,7 +9,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>CodexUsageNotch</AssemblyName>
     <RootNamespace>CodexUsageNotch</RootNamespace>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <Authors>Codex Usage Notch</Authors>
     <Description>A read-only Codex usage companion overlay.</Description>
     <DebugType>embedded</DebugType>

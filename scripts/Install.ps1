@@ -13,7 +13,8 @@ $shortcutPath = Join-Path $startupDirectory 'Codex Usage Notch.lnk'
 
 Get-Process CodexUsageNotch -ErrorAction SilentlyContinue |
     Where-Object { $_.Path -and $_.Path.StartsWith($installRoot, [StringComparison]::OrdinalIgnoreCase) } |
-    Stop-Process -Force
+    Stop-Process -Force -PassThru |
+    Wait-Process -ErrorAction SilentlyContinue
 
 New-Item -ItemType Directory -Path $installRoot -Force | Out-Null
 Copy-Item -Path (Join-Path $resolvedPayload '*') -Destination $installRoot -Recurse -Force

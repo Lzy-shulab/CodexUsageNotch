@@ -21,6 +21,18 @@ public partial class App : Application
             return;
         }
 
+        if (!Options.Preview && !Options.Demo)
+        {
+            try
+            {
+                StartupRegistration.EnsureRegistered();
+            }
+            catch (Exception exception)
+            {
+                DiagnosticLog.Write(exception);
+            }
+        }
+
         ThemeController.Apply(Options.ThemeOverride ?? AppTheme.Dark);
 
         var window = new MainWindow(Options)

@@ -15,7 +15,8 @@ if (-not $installRoot.StartsWith($localAppDataRoot + [IO.Path]::DirectorySeparat
 
 Get-Process CodexUsageNotch -ErrorAction SilentlyContinue |
     Where-Object { $_.Path -and $_.Path.StartsWith($installRoot, [StringComparison]::OrdinalIgnoreCase) } |
-    Stop-Process -Force
+    Stop-Process -Force -PassThru |
+    Wait-Process -ErrorAction SilentlyContinue
 
 if (Test-Path -LiteralPath $shortcutPath)
 {

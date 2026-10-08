@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.IO;
+using System.Runtime.InteropServices;
 using CodexUsageNotch.Models;
 using CodexUsageNotch.Services;
 using CodexUsageNotch.Presentation;
@@ -12,7 +13,7 @@ if (args.Contains("--gallery", StringComparer.OrdinalIgnoreCase))
 
 if (args.Contains("--ui-check", StringComparer.OrdinalIgnoreCase))
 {
-    UiChecks.Run(Path.Combine(Environment.CurrentDirectory, "artifacts", "ui-1.1.1"));
+    UiChecks.Run(Path.Combine(Environment.CurrentDirectory, "artifacts", "ui-1.1.2"));
     return;
 }
 
@@ -44,7 +45,8 @@ var checks = new (string Name, Action Run)[]
     ("Plus 同时保留两个额度窗口及各自重置时间", ParsePlusWindows),
     ("Pro primary 周窗口按实际时长识别", ParseProWeeklyPrimary),
     ("双额度与单额度切换清除旧窗口", SwitchWindowPresentation),
-    ("格式化本地重置与到期时间", FormatLocalTimes)
+    ("格式化本地重置与到期时间", FormatLocalTimes),
+    ("开机启动快捷方式指向正式程序且不带演示参数", RegisterStartupShortcut)
 };
 
 foreach (var check in checks)
@@ -55,6 +57,32 @@ foreach (var check in checks)
 
 Console.WriteLine($"全部 {checks.Length} 项自检通过。");
 return;
+
+static void RegisterStartupShortcut()
+{
+    var directory = Path.Combine(Path.GetTempPath(), "CodexUsageNotch-startup-" + Guid.NewGuid().ToString("N"));
+    var executablePath = Path.Combine(directory, "folder with spaces", "CodexUsageNotch.exe");
+    dynamic shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell", throwOnError: true)!)!;
+    dynamic? shortcut = null;
+    try
+    {
+        StartupRegistration.Register(executablePath, directory);
+        shortcut = shell.CreateShortcut(Path.Combine(directory, "Codex Usage Notch.lnk"));
+        Equal(executablePath, (string)shortcut.TargetPath, "启动程序路径");
+        Equal(string.Empty, (string)shortcut.Arguments, "正式启动不带演示参数");
+        Equal(Path.GetDirectoryName(executablePath), (string)shortcut.WorkingDirectory, "启动工作目录");
+    }
+    finally
+    {
+        if (shortcut is not null)
+        {
+            Marshal.FinalReleaseComObject(shortcut);
+        }
+        Marshal.FinalReleaseComObject(shell);
+        File.Delete(Path.Combine(directory, "Codex Usage Notch.lnk"));
+        Directory.Delete(directory);
+    }
+}
 
 static void ParseSecondaryWindowAndCredits()
 {

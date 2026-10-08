@@ -75,10 +75,18 @@ internal static class UiChecks
         Require(Math.Abs(notch.Height - 32 * previewScale) < 1,
             "演示模式沿用 Codex 窗口的自适应高度");
         var details = Application.Current.Windows.OfType<ResetDetailsWindow>().Single();
+        ClickResetTime(notch);
+        Require(!details.IsOpen && !notch.ResetInfoSegment.Focusable &&
+                notch.ResetInfoSegment.Cursor == Cursors.Arrow,
+            "Pro 重置时间是纯展示，点击不打开弹层");
         ClickReset(notch);
         Require(details.IsOpen, "点击入口后弹层打开");
         await Task.Delay(200);
         Require(details.IsVisible && Math.Abs(details.Opacity - 1) < 0.01, "弹层进入动画完成");
+        ClickResetTime(notch);
+        Require(details.IsOpen && !((NotchViewModel)notch.DataContext).ShowQuotaDetails,
+            "Pro 点击重置时间不切换已有完整重置弹层");
+        Console.WriteLine("PASS  Pro 重置时间点击无操作，不打开或切换额度详情");
 
         ClickReset(notch);
         await Task.Delay(25);

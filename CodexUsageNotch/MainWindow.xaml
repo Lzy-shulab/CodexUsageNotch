@@ -130,6 +130,7 @@
                         <Border Style="{StaticResource SegmentDivider}" />
 
                         <Border x:Name="ResetInfoSegment" Height="22" Padding="4,0"
+                                Focusable="False" Cursor="Arrow"
                                 VerticalAlignment="Center" ToolTip="{Binding ResetText}"
                                 AutomationProperties.Name="{Binding ResetText}">
                           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
