@@ -309,6 +309,9 @@ internal static class UiChecks
                 var name = $"{(plus ? "plus" : "pro")}-{theme.ToString().ToLowerInvariant()}.png";
                 CaptureGallery(notch, details, plus, theme, Path.Combine(outputDirectory, name));
                 Console.WriteLine($"已导出 {name}");
+                var desktopName = $"desktop-{name}";
+                DesktopShowcase.Export(notch, theme == AppTheme.Dark, Path.Combine(outputDirectory, desktopName));
+                Console.WriteLine($"已导出 {desktopName}");
             }
         }
     }

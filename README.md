@@ -6,7 +6,32 @@
 
 **[下载单文件 EXE](https://github.com/Lzy-shulab/CodexUsageNotch/releases/latest/download/CodexUsageNotch.exe)** · **[下载完整便携包](https://github.com/Lzy-shulab/CodexUsageNotch/releases/latest/download/CodexUsageNotch-1.1.2-win-x64.zip)** · [查看发布说明](https://github.com/Lzy-shulab/CodexUsageNotch/releases/latest)
 
-## 四种界面
+## 完整窗口展示
+
+以下为模拟的 Codex 完整窗口。项目名称、聊天记录、头像及输入区均为虚构内容；顶部额度胶囊由本程序实际渲染，额度和时间为演示数据。
+
+### Pro · 浅色
+
+![Pro 浅色完整窗口：顶部显示剩余额度、重置时间和完整重置次数，侧栏使用虚构项目](docs/images/desktop-pro-light.png)
+
+<details>
+<summary>查看 Pro 深色、Plus 浅色和 Plus 深色完整窗口</summary>
+
+### Pro · 深色
+
+![Pro 深色完整窗口，全部工作区内容为模拟数据](docs/images/desktop-pro-dark.png)
+
+### Plus · 浅色
+
+![Plus 浅色完整窗口：顶部显示五小时和本周双额度，全部工作区内容为模拟数据](docs/images/desktop-plus-light.png)
+
+### Plus · 深色
+
+![Plus 深色完整窗口：顶部显示五小时和本周双额度，全部工作区内容为模拟数据](docs/images/desktop-plus-dark.png)
+
+</details>
+
+## 额度浮窗细节
 
 | Pro · 深色 | Pro · 浅色 |
 | :---: | :---: |
@@ -56,6 +81,14 @@
 | 目录 | 内容 |
 | --- | --- |
 | `CodexUsageNotch` | WPF 主程序、额度解析、主题与窗口跟随 |
-| `CodexUsageNotch.Tests` | 功能自检、界面检查和四张效果图导出 |
+| `CodexUsageNotch.Tests` | 功能自检、界面检查和展示图导出 |
 | `scripts` | 构建、安装、卸载 |
-| `docs/images` | Pro / Plus 的明暗效果图 |
+| `docs/images` | Pro / Plus 的完整模拟窗口与浮窗明暗效果图 |
+
+在 Windows 上重新生成展示图：
+
+```powershell
+dotnet run --project CodexUsageNotch.Tests -c Release -- --gallery
+```
+
+完整窗口由 `CodexUsageNotch.Tests/DesktopShowcase.cs` 中的固定演示内容绘制，无需读取个人项目或聊天记录。
