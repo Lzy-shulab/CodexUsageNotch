@@ -1,0 +1,18 @@
+CodexUsageNotch 1.1.1 · Codex 额度浮窗 · Windows x64
+
+双击 CodexUsageNotch.exe 运行。程序内置 .NET 运行环境；需要本机已安装 Codex 桌面客户端并登录账号。更新前先从旧浮窗右键菜单退出旧版。
+
+Pro 保留绿色单环和剩余百分比。Plus 使用蓝色周额度外环、绿色 5 小时内环，显示“5h 99%/本周 80%”。布局按实际返回的额度窗口自动识别。
+
+点击左侧额度查看各周期详情；中间重置时间为纯展示，点击无操作；点击右侧完整重置查看到期列表。右键可立即刷新或退出。
+
+浮窗每 10 秒只读刷新一次，跟随 Codex 前台窗口，自动适配明暗主题和窗口大小。Pro 和 Plus 高度一致，三段文字等高并居中对齐。
+
+四个 Preview 开头的 CMD 文件分别演示 Pro / Plus 的深色与浅色样式。演示使用模拟数据，可与正常浮窗同时运行。切换演示前先右键退出已打开的演示。
+
+四张 PNG 为程序实际渲染的效果图，数值为演示数据。
+
+Pro 已通过真实账号读取验证；Plus 已通过模拟响应和界面检查，尚未使用真实 Plus 账号测试。
+
+源码与介绍：https://github.com/Lzy-shulab/CodexUsageNotch
+版本下载：https://github.com/Lzy-shulab/CodexUsageNotch/releases

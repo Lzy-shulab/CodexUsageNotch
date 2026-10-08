@@ -1,0 +1,173 @@
+<Window x:Class="CodexUsageNotch.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Codex Usage Notch"
+        Width="392" Height="32"
+        WindowStyle="None" ResizeMode="NoResize"
+        AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" ShowActivated="False" Topmost="False"
+        FontFamily="{DynamicResource InterfaceFont}"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        SourceInitialized="OnSourceInitialized"
+        Loaded="OnLoaded" Closed="OnClosed">
+    <Window.ContextMenu>
+        <ContextMenu FontFamily="Segoe UI Variable Text, Microsoft YaHei UI">
+            <MenuItem Header="立即刷新" Click="OnRefreshClick" />
+            <Separator />
+            <MenuItem Header="退出额度浮窗" Click="OnExitClick" />
+        </ContextMenu>
+    </Window.ContextMenu>
+
+    <Viewbox Stretch="Uniform">
+        <Grid Width="{Binding CapsuleDesignWidth}" Height="32" ToolTip="{Binding StatusHint}">
+            <Grid.Resources>
+                <BooleanToVisibilityConverter x:Key="BoolVisibility" />
+                <Style x:Key="CapsuleButton" TargetType="Button">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="4,0" />
+                    <Setter Property="Height" Value="22" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Cursor" Value="Hand" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="ButtonSurface" Background="{TemplateBinding Background}"
+                                        Padding="{TemplateBinding Padding}" CornerRadius="11">
+                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="ButtonSurface" Property="Background" Value="{DynamicResource HoverBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="ButtonSurface" Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter TargetName="ButtonSurface" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                                        <Setter TargetName="ButtonSurface" Property="BorderThickness" Value="1" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="FontWeight" Value="Medium" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="TextWrapping" Value="NoWrap" />
+                    <Setter Property="LineHeight" Value="16" />
+                    <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                </Style>
+                <Style x:Key="SegmentDivider" TargetType="Border">
+                    <Setter Property="Width" Value="1" />
+                    <Setter Property="Height" Value="12" />
+                    <Setter Property="Margin" Value="12,0" />
+                    <Setter Property="Background" Value="{DynamicResource DividerBrush}" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCompact}" Value="True">
+                            <Setter Property="Margin" Value="6,0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+
+            <Border x:Name="CapsuleSurface"
+                    Height="24" Margin="4" CornerRadius="12"
+                    Background="{DynamicResource NotchSurfaceBrush}"
+                    BorderBrush="{DynamicResource NotchBorderBrush}"
+                    BorderThickness="0.8" VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect Color="#B0000000" BlurRadius="6"
+                                      ShadowDepth="1" Opacity="{DynamicResource CapsuleShadowOpacity}" Direction="270" />
+                </Border.Effect>
+                <Grid>
+                    <Border Margin="0.8" CornerRadius="11"
+                            Background="{DynamicResource GlassSheenBrush}" IsHitTestVisible="False" />
+                    <Border Height="8" Margin="1,1,1,0" CornerRadius="10,10,3,3"
+                            Background="{DynamicResource GlassReflectionBrush}"
+                            VerticalAlignment="Top" IsHitTestVisible="False" />
+
+                    <StackPanel Margin="8,0" Orientation="Horizontal"
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button x:Name="PrimaryUsageSegment" Style="{StaticResource CapsuleButton}"
+                                ToolTip="{Binding PrimaryTooltip}" Click="OnQuotaSegmentClick"
+                                AutomationProperties.Name="{Binding PrimaryTooltip}">
+                          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Canvas x:Name="RemainingRing" Width="16" Height="16" VerticalAlignment="Center">
+                                <Ellipse Width="14" Height="14" Canvas.Left="1" Canvas.Top="1"
+                                         Stroke="{DynamicResource ProgressTrackBrush}" StrokeThickness="1.7" />
+                                <Path x:Name="ProgressArc" StrokeThickness="1.9"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent">
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="Stroke" Value="{DynamicResource AccentBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasMultipleWindows}" Value="True">
+                                                    <Setter Property="Stroke" Value="{DynamicResource WeeklyAccentBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                                <Canvas x:Name="SecondaryRing" Width="16" Height="16"
+                                        Visibility="{Binding HasMultipleWindows, Converter={StaticResource BoolVisibility}}">
+                                    <Ellipse Width="8" Height="8" Canvas.Left="4" Canvas.Top="4"
+                                             Stroke="{DynamicResource ProgressTrackBrush}" StrokeThickness="1.3" />
+                                    <Path x:Name="SecondaryProgressArc" Stroke="{DynamicResource AccentBrush}"
+                                          StrokeThickness="1.5" StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round" Fill="Transparent" />
+                                </Canvas>
+                            </Canvas>
+                            <TextBlock x:Name="RemainingLabel" Margin="7,0,0,0"
+                                       Text="{Binding DisplayRemainingText}" />
+                          </StackPanel>
+                        </Button>
+
+                        <Border Style="{StaticResource SegmentDivider}" />
+
+                        <Border x:Name="ResetInfoSegment" Height="22" Padding="4,0"
+                                VerticalAlignment="Center" ToolTip="{Binding ResetText}"
+                                AutomationProperties.Name="{Binding ResetText}">
+                          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Canvas x:Name="ResetIcon" Width="16" Height="16" VerticalAlignment="Center">
+                                <Ellipse Width="13" Height="13" Canvas.Left="1.5" Canvas.Top="1.5"
+                                         Stroke="{DynamicResource SecondaryTextBrush}" StrokeThickness="1.3" />
+                                <Line X1="8" Y1="3.5" X2="8" Y2="8.5"
+                                      Stroke="{DynamicResource SecondaryTextBrush}"
+                                      StrokeThickness="1.3" StrokeStartLineCap="Round" />
+                                <Line X1="8" Y1="8" X2="11.2" Y2="9.9"
+                                      Stroke="{DynamicResource SecondaryTextBrush}"
+                                      StrokeThickness="1.3" StrokeStartLineCap="Round" />
+                            </Canvas>
+                            <TextBlock x:Name="ResetLabel" Margin="6,0,0,0"
+                                       Text="{Binding DisplayResetText}" />
+                          </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource SegmentDivider}" />
+
+                        <Button x:Name="ResetSegment" Style="{StaticResource CapsuleButton}"
+                                ToolTip="{Binding CreditText}" Click="OnResetSegmentClick"
+                                AutomationProperties.Name="查看完整重置到期时间">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Viewbox x:Name="CreditsIcon" Width="16" Height="16" VerticalAlignment="Center">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M 20,11 A 8,8 0 1 1 17.7,5.2 M 17.7,1.8 L 17.7,5.8 L 13.7,5.8"
+                                              Stroke="{DynamicResource SecondaryTextBrush}" StrokeThickness="1.8"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                              StrokeLineJoin="Round" Fill="Transparent" />
+                                    </Canvas>
+                                </Viewbox>
+                                <TextBlock x:Name="CreditLabel" Margin="6,0,0,0" Text="{Binding DisplayCreditText}" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Viewbox>
+</Window>

@@ -1,0 +1,29 @@
+<Application x:Class="CodexUsageNotch.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Startup="OnStartup"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <FontFamily x:Key="InterfaceFont">Segoe UI Variable Text, Microsoft YaHei UI</FontFamily>
+        <SolidColorBrush x:Key="PrimaryTextBrush" Color="#FFF5F7F8" />
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#FFB9BDC1" />
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#FF8B9298" />
+        <SolidColorBrush x:Key="DividerBrush" Color="#30FFFFFF" />
+        <SolidColorBrush x:Key="NotchBorderBrush" Color="#42FFFFFF" />
+        <SolidColorBrush x:Key="InnerHighlightBrush" Color="#38FFFFFF" />
+        <SolidColorBrush x:Key="HoverBrush" Color="#12FFFFFF" />
+        <SolidColorBrush x:Key="ProgressTrackBrush" Color="#38FFFFFF" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#FF35C759" />
+        <SolidColorBrush x:Key="AccentSoftBrush" Color="#2635C759" />
+        <SolidColorBrush x:Key="PopoverBorderBrush" Color="#48FFFFFF" />
+        <LinearGradientBrush x:Key="NotchSurfaceBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#F0181B1D" />
+            <GradientStop Offset="0.58" Color="#ED121517" />
+            <GradientStop Offset="1" Color="#F30B0D0E" />
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="PopoverSurfaceBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="#F31B1E20" />
+            <GradientStop Offset="1" Color="#F3131517" />
+        </LinearGradientBrush>
+    </Application.Resources>
+</Application>

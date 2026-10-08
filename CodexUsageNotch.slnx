@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CodexUsageNotch/CodexUsageNotch.csproj" />
+  <Project Path="CodexUsageNotch.Tests/CodexUsageNotch.Tests.csproj" />
+</Solution>
